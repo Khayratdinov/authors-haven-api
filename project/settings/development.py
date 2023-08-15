@@ -1,9 +1,11 @@
 from .base import *
+from .base import env
 import importlib
 
 
+DEBUG = True
 
-
+SECRET_KEY = env("SECRET_KEY", default="1u_l2m)cay%%)jki^)6%)r$1)qyeh=%uljcs6k^4w0gj_*1ek%")
 ALLOWED_HOSTS = ["*"]
 
 
