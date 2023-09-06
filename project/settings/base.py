@@ -12,7 +12,7 @@ APPS_DIR = PROJECT_DIR / "apps"
 environ.Env.read_env(os.path.join(ROOT_DIR, ".env"))
 
 DEBUG = True
-DEBUG_TOOLBAR = False
+DEBUG_TOOLBAR = True
 
 # ========================== APPLICATION DEFINITION ========================== #
 
@@ -28,12 +28,14 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+
     "rest_framework",
     "django_filters",
     "drf_yasg",
     "django_countries",
     "phonenumber_field",
     "corsheaders",
+
 ]
 
 LOCAL_APPS = ["project.apps.core", 'project.apps.common',  'project.apps.users',  'project.apps.profiles' ]

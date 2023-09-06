@@ -1,26 +1,61 @@
-FROM python:3.9.6-alpine
+ARG PYTHON_VERSION=3.9-slim-bullseye
+
+FROM python:${PYTHON_VERSION} as python
+
+FROM python as python-build-stage
+ARG BUILD_ENVIRONMENT=local
+
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    build-essential \
+    libpq-dev 
+
+COPY ./requirements .
+
+RUN pip wheel --wheel-dir /usr/src/app/wheels \
+    -r ${BUILD_ENVIRONMENT}.txt
 
 
+FROM python as python-run-stage
 
-# set work directory
-WORKDIR /usr/src/app
+ARG BUILD_ENVIRONMENT=local
+ARG APP_HOME=/app
 
-# set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
+
 ENV PYTHONUNBUFFERED 1
 
-# install psycopg2 dependencies
-RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev
+ENV BUILD_ENV ${BUILD_ENVIRONMENT}
 
-# install dependencies
-RUN pip install --upgrade pip
-COPY ./requirements /usr/src/app/requirements/
-RUN pip install -r requirements/base.txt
+WORKDIR ${APP_HOME}
 
-
-
+RUN apt-get update && apt-get install --no-install-recommends -y \
+    libpq-dev \
+    gettext \
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false \
+    && rm -rf /var/lib/apt/lists/*
 
 
-# copy project
-COPY . .
+COPY --from=python-build-stage /usr/src/app/wheels /wheels/
+
+RUN pip install --no-cache-dir --no-index --find-links=/wheels/ /wheels/* \
+    && rm -rf /wheels/
+
+COPY ./docker/local/django/entrypoint /entrypoint
+RUN sed -i 's/\r$//g' /entrypoint
+RUN chmod +x /entrypoint
+
+COPY ./docker/local/django/start /start
+RUN sed -i 's/\r$//g' /start
+RUN chmod +x /start
+
+COPY ./docker/local/django/celery/worker/start /start-celeryworker
+RUN sed -i 's/\r$//g' /start-celeryworker
+RUN chmod +x /start-celeryworker
+
+COPY ./docker/local/django/celery/flower/start /start-flower
+RUN sed -i 's/\r$//g' /start-flower
+RUN chmod +x /start-flower
+
+COPY . ${APP_HOME}
+
+ENTRYPOINT ["/entrypoint"]
