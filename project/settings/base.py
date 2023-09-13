@@ -79,10 +79,10 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "project.wsgi.application"
 
-# DATABASES = {
-#     "default": env.db("DATABASE_URL"),
-# }
-# DATABASES["default"]["ATOMIC_REQUESTS"] = True
+DATABASES = {
+    "default": env.db("DATABASE_URL"),
+}
+DATABASES["default"]["ATOMIC_REQUESTS"] = True
 
 
 PASSWORD_HASHERS = [
@@ -151,6 +151,7 @@ STATICFILES_FINDERS = [
 
 MEDIA_ROOT = str(PROJECT_DIR / "media")
 MEDIA_URL = "/media/"
+
 
 
 # Default primary key field type
