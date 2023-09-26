@@ -1,0 +1,6 @@
+#!/bin/bash
+
+set -o errexit
+set -o nounset
+
+watchmedo auto-restart -d project/ -p '*.py' -- celery -A project.celery worker --loglevel=info

@@ -39,3 +39,11 @@ if importlib.util.find_spec("debug_toolbar"):
 
     # Set INTERNAL_IPS to allow local access to the debug_toolbar
     INTERNAL_IPS = ['127.0.0.1']
+
+
+EMAIL_BACKEND = "djcelery_email.backends.CeleryEmailBackend"
+EMAIL_HOST = env("EMAIL_HOST", default="mailhog")
+EMAIL_PORT = env("EMAIL_PORT")
+DEFAULT_FROM_EMAIL = "info@authors-haven.com"
+DOMAIN = env("DOMAIN")
+SITE_NAME = "Authors Haven"
