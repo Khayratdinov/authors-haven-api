@@ -2,6 +2,7 @@ import os
 from pathlib import Path
 import environ
 import os
+from datetime import timedelta
 
 env = environ.Env(DEBUG=(bool, False))
 
@@ -35,7 +36,9 @@ THIRD_PARTY_APPS = [
     "django_countries",
     "phonenumber_field",
     "corsheaders",
-     "djcelery_email",
+    "djcelery_email",
+    "djoser",
+    "rest_framework_simplejwt",
 
 ]
 
@@ -176,7 +179,42 @@ CELERY_RESULT_SERIALIZER = "json"
 REST_FRAMEWORK = {
     "EXCEPTION_HANDLER": "project.apps.common.exceptions.common_exception_handler",
     "NON_FIELD_ERRORS_KEY": "error",
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ),
+}
 
+
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": (
+        "Bearer",
+        "JWT",
+    ),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=720),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "SIGNING_KEY": env("SIGNING_KEY"),
+    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+}
+
+DJOSER = {
+    "LOGIN_FIELD": "email",
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "USERNAME_CHANGED_EMAIL_CONFIMATION": True,
+    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
+    "SEND_CONFIRMATION_EMAIL": True,
+    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
+    "SET_PASSWORD_RETYPE": True,
+    "PASSWORD_RESET_CONFIRM_RETYPE": True,
+    "USERNAME_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",
+    "ACTIVATION_URL": "activate/{uid}/{token}",
+    "SEND_ACTIVATION_EMAIL": True,
+    "SERIALIZERS": {
+        "user_create": "project.apps.users.serializers.CreateUserSerializer",
+        "user": "project.apps.users.serializers.UserSerializer",
+        "current_user": "project.apps.users.serializers.UserSerializer",
+        "user_delete": "djoser.serializers.UserDeleteSerializer",
+    },
 }
 
 
