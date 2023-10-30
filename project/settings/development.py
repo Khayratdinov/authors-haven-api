@@ -5,9 +5,12 @@ import importlib
 
 DEBUG = True
 
-SECRET_KEY = env("SECRET_KEY", default="1u_l2m)cay%%)jki^)6%)r$1)qyeh=%uljcs6k^4w0gj_*1ek%")
+SECRET_KEY = env(
+    "SECRET_KEY", default="1u_l2m)cay%%)jki^)6%)r$1)qyeh=%uljcs6k^4w0gj_*1ek%"
+)
 ALLOWED_HOSTS = ["*"]
 
+CSRF_TRUSTED_ORIGINS = ["http://localhost:8080"]
 
 
 # ================================= DATABASE ================================= #
@@ -29,16 +32,17 @@ if importlib.util.find_spec("debug_toolbar"):
     DEBUG_TOOLBAR = True
 
     import debug_toolbar
+
     INSTALLED_APPS.append("debug_toolbar")
 
     # Add debug_toolbar to the MIDDLEWARE
     MIDDLEWARE.insert(
-    0,
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+        0,
+        "debug_toolbar.middleware.DebugToolbarMiddleware",
     )
 
     # Set INTERNAL_IPS to allow local access to the debug_toolbar
-    INTERNAL_IPS = ['127.0.0.1']
+    INTERNAL_IPS = ["127.0.0.1"]
 
 
 EMAIL_BACKEND = "djcelery_email.backends.CeleryEmailBackend"

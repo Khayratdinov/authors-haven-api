@@ -29,7 +29,6 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-
     "rest_framework",
     "django_filters",
     "drf_yasg",
@@ -39,10 +38,14 @@ THIRD_PARTY_APPS = [
     "djcelery_email",
     "djoser",
     "rest_framework_simplejwt",
-
 ]
 
-LOCAL_APPS = ["project.apps.core", 'project.apps.common',  'project.apps.users',  'project.apps.profiles' ]
+LOCAL_APPS = [
+    "project.apps.core",
+    "project.apps.common",
+    "project.apps.users",
+    "project.apps.profiles",
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
@@ -130,11 +133,9 @@ USE_TZ = True
 
 SITE_ID = 1
 
-ADMIN_URL = "superuser/"
+ADMIN_URL = "supersecret/"
 
-ADMINS = [
-    (""" Nurpolat """, "khayratdinov.np@gmail.com"),
-]
+
 
 MANAGERS = ADMINS
 
@@ -155,7 +156,6 @@ STATICFILES_FINDERS = [
 
 MEDIA_ROOT = str(PROJECT_DIR / "media")
 MEDIA_URL = "/media/"
-
 
 
 # Default primary key field type
@@ -224,7 +224,8 @@ LOGGING = {
     "formatters": {
         "verbose": {
             "format": (
-                "%(levelname)s %(name)-12s %(asctime)s %(module)s " + "%(process)d %(thread)d %(message)s"
+                "%(levelname)s %(name)-12s %(asctime)s %(module)s "
+                + "%(process)d %(thread)d %(message)s"
             )
         }
     },
