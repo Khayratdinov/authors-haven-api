@@ -136,7 +136,6 @@ SITE_ID = 1
 ADMIN_URL = "supersecret/"
 
 
-
 MANAGERS = ADMINS
 
 
