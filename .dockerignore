@@ -1,6 +1,7 @@
 .idea
-env
+venv
 **/.git
 .vscode
 README.md
 LICENSE
+.gitignore
