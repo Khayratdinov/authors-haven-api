@@ -7,10 +7,10 @@ from rest_framework import permissions
 
 schema_view = get_schema_view(
     openapi.Info(
-        title="Authors API",
+        title="Authors Haven API",
         default_version="v1",
-        description="API endpoints for the Authors API course",
-        contact=openapi.Contact(email="api.imperfect@gmail.com"),
+        description="API endpoints for Authors Haven API Course",
+        contact=openapi.Contact(email="khayratdinov.np@gmail.com"),
         license=openapi.License(name="MIT License"),
     ),
     public=True,
@@ -18,7 +18,7 @@ schema_view = get_schema_view(
 )
 
 urlpatterns = [
-    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schema-redoc"),
+    path("redoc/", schema_view.with_ui("redoc", cache_timeout=0)),
     path(settings.ADMIN_URL, admin.site.urls),
     path("api/v1/auth/", include("djoser.urls")),
     path("api/v1/auth/", include("djoser.urls.jwt")),
