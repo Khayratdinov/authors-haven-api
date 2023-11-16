@@ -4,24 +4,33 @@ from django.utils.translation import gettext_lazy as _
 from django_countries.fields import CountryField
 from phonenumber_field.modelfields import PhoneNumberField
 
-from project.apps.common.models import TimeStampedUUIDModel
+from project.apps.common.models import TimeStampedModel
 
 User = get_user_model()
 
 
-class Profile(TimeStampedUUIDModel):
+class Profile(TimeStampedModel):
     class Gender(models.TextChoices):
-        MALE = "male", _("male")
-        FEMALE = "female", _("female")
-        OTHER = "other", _("other")
+        MALE = (
+            "M",
+            _("Male"),
+        )
 
-    user = models.OneToOneField(User, related_name="profile", on_delete=models.CASCADE)
+        FEMALE = (
+            "F",
+            _("Female"),
+        )
+        OTHER = (
+            "O",
+            _("Other"),
+        )
+
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="profile")
     phone_number = PhoneNumberField(
         verbose_name=_("phone number"), max_length=30, default="+998941234567"
     )
     about_me = models.TextField(
-        verbose_name=_("about me"),
-        default="say something about yourself",
+        verbose_name=_("about me"), default="say something about yourself"
     )
     gender = models.CharField(
         verbose_name=_("gender"),
@@ -43,29 +52,20 @@ class Profile(TimeStampedUUIDModel):
         verbose_name=_("profile photo"), default="/profile_default.png"
     )
     twitter_handle = models.CharField(
-        verbose_name=_("twitter_handle"), max_length=20, blank=True
+        verbose_name=_("twitter handle"), max_length=20, blank=True
     )
-    follows = models.ManyToManyField(
-        "self", symmetrical=False, related_name="followed_by", blank=True
+    followers = models.ManyToManyField(
+        "self", symmetrical=False, related_name="following", blank=True
     )
 
     def __str__(self):
-        return f"{self.user.username}'s profile"
-
-    def following_list(self):
-        return self.follows.all()
-
-    def followers_list(self):
-        return self.followed_by.all()
+        return f"{self.user.first_name}'s Profile"
 
     def follow(self, profile):
-        self.follows.add(profile)
+        self.followers.add(profile)
 
     def unfollow(self, profile):
-        self.follows.remove(profile)
+        self.followers.remove(profile)
 
     def check_following(self, profile):
-        return self.follows.filter(pkid=profile.pkid).exists()
-
-    def check_is_followed_by(self, profile):
-        return self.followed_by.filter(pkid=profile.pkid).exists()
+        return self.followers.filter(pkid=profile.pkid).exists()

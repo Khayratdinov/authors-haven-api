@@ -13,9 +13,5 @@ logger = logging.getLogger(__name__)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
-
-
-@receiver(post_save, sender=AUTH_USER_MODEL)
-def save_user_profile(sender, instance, **kwargs):
-    instance.profile.save()
+        logger.info(f"{instance}'s profile has been created.")
     logger.info(f"{instance}'s profile created")
