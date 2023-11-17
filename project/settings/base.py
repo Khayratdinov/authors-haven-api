@@ -36,8 +36,12 @@ THIRD_PARTY_APPS = [
     "phonenumber_field",
     "corsheaders",
     "djcelery_email",
-    "djoser",
-    "rest_framework_simplejwt",
+    "rest_framework.authtoken",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
 ]
 
 LOCAL_APPS = [
@@ -144,7 +148,7 @@ ADMIN_URL = "supersecret/"
 
 
 STATIC_ROOT = str(ROOT_DIR / "staticfiles")
-STATIC_URL = "/static/"
+STATIC_URL = "/staticfiles/"
 
 STATICFILES_DIRS = [str(PROJECT_DIR / "static")]
 STATICFILES_FINDERS = [
@@ -153,8 +157,8 @@ STATICFILES_FINDERS = [
 ]
 
 
-MEDIA_ROOT = str(PROJECT_DIR / "media")
-MEDIA_URL = "/media/"
+MEDIA_ROOT = str(PROJECT_DIR / "mediafiles")
+MEDIA_URL = "/mediafiles/"
 
 
 # Default primary key field type
@@ -186,46 +190,63 @@ CELERY_TASK_SEND_SENT_EVENT = True
 if USE_TZ:
     CELERY_TIMEZONE = TIME_ZONE
 
+# REST_FRAMEWORK = {
+#     "EXCEPTION_HANDLER": "project.apps.common.exceptions.common_exception_handler",
+#     "NON_FIELD_ERRORS_KEY": "error",
+#     "DEFAULT_AUTHENTICATION_CLASSES": (
+#         "rest_framework_simplejwt.authentication.JWTAuthentication",
+#     ),
+# }
+
 REST_FRAMEWORK = {
-    "EXCEPTION_HANDLER": "project.apps.common.exceptions.common_exception_handler",
-    "NON_FIELD_ERRORS_KEY": "error",
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
-    ),
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "dj_rest_auth.jwt_auth.JWTCookieAuthentication",
+    ],
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.IsAuthenticated",
+    ],
+    "DEFAULT_FILTER_BACKENDS": [
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ],
 }
 
+
+# SIMPLE_JWT = {
+#     "AUTH_HEADER_TYPES": (
+#         "Bearer",
+#         "JWT",
+#     ),
+#     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=720),
+#     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+#     "SIGNING_KEY": env("SIGNING_KEY"),
+#     "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
+#     "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+# }
 
 SIMPLE_JWT = {
-    "AUTH_HEADER_TYPES": (
-        "Bearer",
-        "JWT",
-    ),
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=720),
+    "AUTH_HEADER_TYPES": ("Bearer",),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=30),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "ROTATE_REFRESH_TOKENS": True,
     "SIGNING_KEY": env("SIGNING_KEY"),
-    "AUTH_HEADER_NAME": "HTTP_AUTHORIZATION",
-    "AUTH_TOKEN_CLASSES": ("rest_framework_simplejwt.tokens.AccessToken",),
+    "USER_ID_FIELD": "id",
+    "USER_ID_CLAIM": "user_id",
 }
 
-DJOSER = {
-    "LOGIN_FIELD": "email",
-    "USER_CREATE_PASSWORD_RETYPE": True,
-    "USERNAME_CHANGED_EMAIL_CONFIMATION": True,
-    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
-    "SEND_CONFIRMATION_EMAIL": True,
-    "PASSWORD_RESET_CONFIRM_URL": "password/reset/confirm/{uid}/{token}",
-    "SET_PASSWORD_RETYPE": True,
-    "PASSWORD_RESET_CONFIRM_RETYPE": True,
-    "USERNAME_RESET_CONFIRM_URL": "email/reset/confirm/{uid}/{token}",
-    "ACTIVATION_URL": "activate/{uid}/{token}",
-    "SEND_ACTIVATION_EMAIL": True,
-    "SERIALIZERS": {
-        "user_create": "project.apps.users.serializers.CreateUserSerializer",
-        "user": "project.apps.users.serializers.UserSerializer",
-        "current_user": "project.apps.users.serializers.UserSerializer",
-        "user_delete": "djoser.serializers.UserDeleteSerializer",
-    },
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_COOKIE": "authors-access-token",
+    "JWT_AUTH_REFRESH_COOKIE": "authors-refresh-token",
+    "REGISTER_SERIALIZER": "project.apps.users.serializers.CustomRegisterSerializer",
 }
+
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_CONFIRMATION_EXPIRE_DAYS = 1
+ACCOUNT_USER_MODEL_USERNAME_FIELD = None
+ACCOUNT_USERNAME_REQUIRED = False
 
 
 LOGGING = {

@@ -10,7 +10,9 @@ SECRET_KEY = env(
 )
 ALLOWED_HOSTS = ["*"]
 
-CSRF_TRUSTED_ORIGINS = ["http://localhost:8080"]
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:8080",
+]
 
 
 # ================================= DATABASE ================================= #
