@@ -44,7 +44,7 @@ THIRD_PARTY_APPS = [
     "dj_rest_auth.registration",
 ]
 
-LOCAL_APPS = [
+LOCAL_APPS = ['project.apps.ratings', 'project.apps.articles', 
     "project.apps.core",
     "project.apps.common",
     "project.apps.users",
