@@ -42,9 +42,12 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "dj_rest_auth",
     "dj_rest_auth.registration",
+    "taggit",
 ]
 
-LOCAL_APPS = ['project.apps.ratings', 'project.apps.articles', 
+LOCAL_APPS = [
+    "project.apps.ratings",
+    "project.apps.articles",
     "project.apps.core",
     "project.apps.common",
     "project.apps.users",
