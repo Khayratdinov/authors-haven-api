@@ -31,8 +31,8 @@ urlpatterns = [
         PasswordResetConfirmView.as_view(),
         name="password_reset_confirm",
     ),
-    path("api/v1/profiles/", include("core_apps.profiles.urls")),
-    path("api/v1/articles/", include("core_apps.articles.urls")),
+    path("api/v1/profiles/", include("project.apps.profiles.urls")),
+    path("api/v1/articles/", include("project.apps.articles.urls")),
 ]
 
 admin.site.site_header = "Authors Haven API Admin"
