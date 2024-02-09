@@ -46,6 +46,7 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
+    "project.apps.bookmarks",
     "project.apps.ratings",
     "project.apps.articles",
     "project.apps.core",
