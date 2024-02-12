@@ -1,6 +1,15 @@
 version: '3'
 
 services:
+  es:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+    environment:
+      - discovery.type=single-node
+    ports:
+      - '9200:9200'
+      - '9300:9300'
+    networks:
+      - authors-api
   api:
     build:
       context: .
@@ -20,6 +29,7 @@ services:
       - postgres
       - mailhog
       - redis
+      - es
 
     command: /start
     networks:

@@ -43,9 +43,12 @@ THIRD_PARTY_APPS = [
     "dj_rest_auth",
     "dj_rest_auth.registration",
     "taggit",
+    "django_elasticsearch_dsl",
+    "django_elasticsearch_dsl_drf",
 ]
 
 LOCAL_APPS = [
+    "project.apps.search",
     "project.apps.responses",
     "project.apps.bookmarks",
     "project.apps.ratings",
@@ -273,4 +276,11 @@ LOGGING = {
         }
     },
     "root": {"level": "INFO", "handlers": ["console"]},
+}
+
+
+ELASTICSEARCH_DSL = {
+    "default": {
+        "hosts": "es:9200",
+    },
 }
