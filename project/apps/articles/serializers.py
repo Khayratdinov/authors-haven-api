@@ -1,10 +1,9 @@
 from rest_framework import serializers
 
 from project.apps.articles.models import Article, ArticleView, Clap
-from project.apps.profiles.serializers import ProfileSerializer
 from project.apps.bookmarks.models import Bookmark
 from project.apps.bookmarks.serializers import BookmarkSerializer
-
+from project.apps.profiles.serializers import ProfileSerializer
 from project.apps.responses.serializers import ResponseSerializer
 
 

@@ -1,7 +1,6 @@
 from .base import *
 from .base import env
 
-
 ADMINS = [
     (""" Nurpolat """, "khayratdinov.np@gmail.com"),
 ]
