@@ -69,3 +69,6 @@ pytest:
 
 pytest-html:
 	docker compose -f local.yml run --rm api pytest -p no:warnings --cov=. --cov-report html
+
+check-deploy:
+	docker compose -f local.yml run --rm api python manage.py check --deploy

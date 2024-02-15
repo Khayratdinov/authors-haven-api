@@ -4,7 +4,7 @@ from celery import Celery
 from django.conf import settings
 
 # TODO: change this in production
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings.development")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "project.settings.production")
 
 app = Celery("authors_api")
 
